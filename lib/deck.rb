@@ -1,20 +1,13 @@
-require './lib/card'
-
 class Deck
 
-attr_reader :new_card
+attr_reader :cards
 
-  def initialize(new_card)
+  def initialize(cards)
+    @cards = cards
 
-    @new_card = new_card
-
-  end
-
-  def cards
-    new_card
   end
 
   def count
-    new_card.count
+    cards.count
   end
 end

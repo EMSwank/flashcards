@@ -1,6 +1,6 @@
 require './lib/deck'
 require './lib/guess'
-require 'pry'
+require './lib/card'
 
 class Round
   attr_reader :deck, :guesses, :number_correct, :current
@@ -13,7 +13,7 @@ class Round
   end
 
   def current_card
-    @deck.cards[current]
+    deck.cards[@current]
   end
 
   def record_guess(guess)
@@ -22,11 +22,11 @@ class Round
     return @attempt
   end
 
-  def number_correct
+  def next_card
       if @attempt.correct?
         @number_correct += 1
       else !@attempt.correct?
-        deck.cards.push(deck.cards[@current])
+        deck.cards[@current]
       end
       @current += 1
   end
@@ -34,4 +34,23 @@ class Round
   def percent_correct
     ((number_correct.to_f / guesses.count.to_f) * 100).round
   end
+
+  def start
+    puts "Welcome! You're playing with #{deck.card_count} cards."
+
+    deck.cards.each do |card|
+      puts "This is card number #{current + 1} out of #{deck.card_count}."
+      puts "Question: #{card.question}"
+      response = gets.chomp
+      record_guess(response)
+      puts guesses.last.feedback
+      next_card
+    end
+
+    puts "****** Game over! ******"
+    puts "You had #{number_correct} correct guesses out of #{deck.card_count}
+          for a score of #{percent_correct}%."
+  end
+
+
 end

@@ -7,7 +7,7 @@ attr_reader :cards
 
   end
 
-  def count
+  def card_count
     cards.count
   end
 end
